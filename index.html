@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DCT-MD | Pair Device</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+    background:#000;
+    color:#00ff66;
+    font-family:"Courier New",monospace;
+    overflow-x:hidden;
+}
+
+/* Scanline effect */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:repeating-linear-gradient(
+        0deg,
+        rgba(0,255,100,.025) 0px,
+        rgba(0,255,100,.025) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    z-index:10;
+}
+
+/* Glow */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    box-shadow:inset 0 0 100px rgba(0,255,80,.15);
+}
+
+.header{
+    text-align:center;
+    padding:35px 15px 15px;
+}
+
+.title{
+    font-size:34px;
+    font-weight:bold;
+    text-shadow:
+        0 0 5px #00ff66,
+        0 0 20px #00ff66;
+    animation:glow 2s infinite alternate;
+}
+
+.subtitle{
+    margin-top:15px;
+    font-size:17px;
+    letter-spacing:3px;
+    text-shadow:0 0 10px #00ff66;
+}
+
+@keyframes glow{
+    from{
+        text-shadow:0 0 5px #00ff66;
+    }
+    to{
+        text-shadow:
+        0 0 10px #00ff66,
+        0 0 30px #00ff66;
+    }
+}
+
+.card{
+    width:90%;
+    max-width:650px;
+    margin:150px auto 40px;
+    padding:45px 30px;
+    background:rgba(0,10,3,.85);
+    border:2px solid #00ff66;
+    border-radius:28px;
+    box-shadow:
+        0 0 10px #00ff66,
+        0 0 35px rgba(0,255,100,.55),
+        inset 0 0 30px rgba(0,255,100,.08);
+    text-align:center;
+    animation:cardIn 1s ease;
+}
+
+@keyframes cardIn{
+    from{
+        opacity:0;
+        transform:translateY(40px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.card-title{
+    font-size:29px;
+    line-height:1.5;
+    text-shadow:0 0 15px #00ff66;
+    margin-bottom:15px;
+}
+
+.status{
+    font-size:17px;
+    margin:8px 0;
+}
+
+.status span{
+    color:#00ff66;
+}
+
+.btn{
+    display:block;
+    width:85%;
+    max-width:450px;
+    margin:25px auto;
+    padding:18px;
+    background:transparent;
+    color:#00ff66;
+    border:2px solid #00ff66;
+    border-radius:10px;
+    font-family:"Courier New",monospace;
+    font-size:17px;
+    cursor:pointer;
+    transition:.25s;
+    box-shadow:0 0 8px rgba(0,255,100,.3);
+}
+
+.btn:hover{
+    background:#00ff66;
+    color:#000;
+    box-shadow:0 0 30px #00ff66;
+    transform:scale(1.03);
+}
+
+input{
+    width:85%;
+    max-width:450px;
+    padding:17px;
+    margin:15px auto;
+    display:block;
+    background:#000;
+    color:#00ff66;
+    border:2px solid #00ff66;
+    border-radius:8px;
+    outline:none;
+    font-family:"Courier New",monospace;
+    font-size:17px;
+    text-align:center;
+    box-shadow:0 0 10px rgba(0,255,100,.25);
+}
+
+input::placeholder{
+    color:#168c42;
+}
+
+input:focus{
+    box-shadow:0 0 25px rgba(0,255,100,.5);
+}
+
+.result{
+    display:none;
+    margin:25px auto 0;
+    width:90%;
+    padding:20px;
+    border:1px dashed #00ff66;
+    border-radius:12px;
+    background:rgba(0,255,100,.05);
+}
+
+.code{
+    font-size:28px;
+    letter-spacing:5px;
+    margin:12px 0;
+    color:#fff;
+    text-shadow:0 0 15px #00ff66;
+}
+
+.loading{
+    display:none;
+    margin:20px;
+}
+
+.dot{
+    animation:blink 1s infinite;
+}
+
+@keyframes blink{
+    0%,100%{opacity:.2}
+    50%{opacity:1}
+}
+
+.back{
+    margin-top:25px;
+    color:#00ff66;
+    text-decoration:none;
+    display:inline-block;
+}
+
+.footer{
+    text-align:center;
+    padding:20px;
+    color:#08752f;
+    font-size:13px;
+}
+
+@media(max-width:500px){
+
+    .title{
+        font-size:27px;
+    }
+
+    .card{
+        margin-top:110px;
+        padding:35px 18px;
+    }
+
+    .card-title{
+        font-size:24px;
+    }
+
+    .btn,input{
+        width:95%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <div class="title">
+        I AM : ( DCT-MD )
+    </div>
+
+    <div class="subtitle">
+        [ DCT-MD PAIR SYSTEM ]
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-title">
+        I AM : ( DCT-MD )
+    </div>
+
+    <div class="status">
+        &gt; SYSTEM STATUS:
+        <span>ONLINE</span>
+    </div>
+
+    <div class="status">
+        &gt; ACCESS LEVEL:
+        <span>AUTHORIZED</span>
+    </div>
+
+
+    <button class="btn" onclick="startPair()">
+        &gt;&gt; INITIATE PAIRING
+    </button>
+
+
+    <div id="pairBox" style="display:none;">
+
+        <input
+            id="phone"
+            type="tel"
+            placeholder="Enter WhatsApp number"
+            autocomplete="off"
+        >
+
+        <button class="btn" onclick="generatePair()">
+            &gt;&gt; GENERATE PAIR CODE
+        </button>
+
+    </div>
+
+
+    <div class="loading" id="loading">
+        &gt; CONNECTING
+        <span class="dot">.</span>
+        <span class="dot">.</span>
+        <span class="dot">.</span>
+    </div>
+
+
+    <div class="result" id="result">
+
+        &gt; PAIR CODE GENERATED
+
+        <div class="code" id="code">
+            ---- ----
+        </div>
+
+        <button class="btn" onclick="copyCode()">
+            &gt;&gt; COPY CODE
+        </button>
+
+    </div>
+
+
+    <a class="back" href="index.html">
+        &lt;&lt; BACK TO HOME
+    </a>
+
+</div>
+
+
+<div class="footer">
+    DCT-MD © 2026 | SECURE PAIR SYSTEM
+</div>
+
+
+<script>
+
+function startPair(){
+
+    document.getElementById("pairBox").style.display="block";
+
+    document.getElementById("pairBox")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+async function generatePair(){
+
+    const phone =
+        document.getElementById("phone").value.trim();
+
+    if(!phone){
+
+        alert("Enter your WhatsApp number");
+
+        return;
+    }
+
+
+    document.getElementById("loading")
+        .style.display="block";
+
+    document.getElementById("result")
+        .style.display="none";
+
+
+    try{
+
+        /*
+         * Your backend endpoint:
+         * POST /api/pair
+         *
+         * Example response:
+         * {
+         *   "success": true,
+         *   "code": "ABCD1234"
+         * }
+         */
+
+        const response = await fetch("/api/pair",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                phone:phone
+            })
+
+        });
+
+
+        const data = await response.json();
+
+
+        if(data.success && data.code){
+
+            document.getElementById("code")
+                .textContent=data.code;
+
+            document.getElementById("result")
+                .style.display="block";
+
+        }else{
+
+            alert(
+                data.message ||
+                "Unable to generate pair code"
+            );
+
+        }
+
+
+    }catch(error){
+
+        alert(
+            "Pair server is not connected."
+        );
+
+        console.error(error);
+
+    }
+
+
+    document.getElementById("loading")
+        .style.display="none";
+
+}
+
+
+function copyCode(){
+
+    const code =
+        document.getElementById("code")
+        .textContent;
+
+    navigator.clipboard.writeText(code)
+    .then(()=>{
+
+        alert("Pair code copied!");
+
+    });
+
+}
+
+</script>
+
+</body>
+  </html>
